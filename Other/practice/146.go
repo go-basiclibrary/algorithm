@@ -2,25 +2,21 @@ package main
 
 import "fmt"
 
-// 146 LRU缓存
+// 146 LRU缓存  (map+双向链表)
 func main() {
 	cache := Constructor(2)
-	cache.Put(1, 1)
+	cache.Put(2, 1)
 	cache.Put(2, 2)
-	cache.Put(3, 3)
-	cache.Get(1)
 	fmt.Println(cache.Get(2))
-	cache.Put(4, 4)
-	fmt.Println(cache.Get(1))
-	fmt.Println(cache.Get(3))
-	fmt.Println(cache.Get(4))
+	cache.Put(1, 1)
+	cache.Put(4, 1)
+	fmt.Println(cache.Get(2))
 }
 
 /*
 	思路一:map用于缓存key value
 		双向链表,解决访问次数问题
 */
-
 type LinkedList struct {
 	key   int
 	value int
@@ -33,8 +29,6 @@ type LRUCache struct {
 	Cache map[int]*LinkedList
 	// cap控制
 	CapCity int
-	// 计数
-	count int
 
 	head *LinkedList
 	tail *LinkedList
@@ -53,57 +47,53 @@ func Constructor(capacity int) LRUCache {
 }
 
 func (lru *LRUCache) Get(key int) int {
-	//从缓存中拿数据,存在则返回
-	if res, ok := lru.Cache[key]; !ok { //不存在
-		//不存在返回-1
-		return -1
-	} else {
-		//将该链写入链尾
-		lru.popToTail(res)
+	if res, ok := lru.Cache[key]; ok {
+		lru.moveToTail(res)
 		return res.value
 	}
+	return -1
 }
 
 func (lru *LRUCache) Put(key int, value int) {
-	entry := &LinkedList{key: key, value: value}
-	//存在则更新值
-	if _, ok := lru.Cache[key]; ok { // exist
-		//改值
-		lru.Cache[key] = entry
-		//加入表尾
-		lru.popToTail(entry)
-	} else {
-		if lru.CapCity < lru.count+1 {
-			//移除表头
-			lru.removeHead()
-			delete(lru.Cache, key)
-			//加入数据到表尾
-			lru.popToTail(entry)
-		} else {
-			//加入数据到表尾
-			lru.popToTail(entry)
-		}
-		lru.Cache[key] = entry
-		lru.count++
+	if res, ok := lru.Cache[key]; ok {
+		lru.moveToTail(res)
+		lru.Cache[key].value = value
+		return
 	}
+
+	if lru.CapCity == len(lru.Cache) {
+		delKey := lru.removeHead()
+		delete(lru.Cache, delKey)
+	}
+
+	newNode := &LinkedList{key: key, value: value}
+	lru.addToTail(newNode)
+	lru.Cache[key] = newNode
 }
 
-// 将数据搞入链尾
-func (lru *LRUCache) popToTail(entry *LinkedList) {
-	entry.next = lru.tail
-	entry.prev = lru.tail.prev
-	lru.tail.prev.next = entry
-	lru.tail.prev = entry
+func (lru *LRUCache) moveToTail(n *LinkedList) {
+	//删除节点
+	lru.deleteToNode(n)
+	//再加入尾
+	lru.addToTail(n)
 }
 
-//  删除表头
-func (lru *LRUCache) removeHead() {
-	lru.count--
+func (lru *LRUCache) deleteToNode(n *LinkedList) {
+	n.prev.next = n.next
+	n.next.prev = n.prev
+}
+
+func (lru *LRUCache) addToTail(n *LinkedList) {
+	//接入
+	n.next = lru.tail
+	n.prev = lru.tail.prev
+	//切断
+	lru.tail.prev.next = n
+	lru.tail.prev = n
+}
+
+func (lru *LRUCache) removeHead() int {
 	node := lru.head.next
-	lru.deleteNode(node)
-}
-
-func (lru *LRUCache) deleteNode(node *LinkedList) {
-	node.prev.next = node.next
-	node.next.prev = node.prev
+	lru.deleteToNode(node)
+	return node.key
 }
