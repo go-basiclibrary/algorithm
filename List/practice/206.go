@@ -4,7 +4,7 @@ import "fmt"
 
 //206反转链表
 func main() {
-	res := reverseList3(&ListNode{Val: 1, Next: &ListNode{Val: 2, Next: &ListNode{Val: 3, Next: &ListNode{Val: 4, Next: &ListNode{Val: 5}}}}})
+	res := reverseList4(&ListNode{Val: 1, Next: &ListNode{Val: 2, Next: &ListNode{Val: 3, Next: &ListNode{Val: 4, Next: &ListNode{Val: 5}}}}})
 	fmt.Println(*res)
 }
 
@@ -44,6 +44,26 @@ func reverseList3(head *ListNode) *ListNode {
 		return head
 	}
 	var p = reverseList3(head.Next)
+	head.Next.Next = head
+	head.Next = nil
+	return p
+}
+
+func reverseList4(head *ListNode) *ListNode {
+	var prev *ListNode
+	cur := head
+	for cur != nil {
+		cur.Next, cur, prev = prev, cur.Next, cur
+	}
+
+	return prev
+}
+
+func reverseList5(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+	p := reverseList(head.Next)
 	head.Next.Next = head
 	head.Next = nil
 	return p
