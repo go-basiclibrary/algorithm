@@ -4,17 +4,17 @@ import "fmt"
 
 //206反转链表
 func main() {
-	res := reverseList4(&ListNode{Val: 1, Next: &ListNode{Val: 2, Next: &ListNode{Val: 3, Next: &ListNode{Val: 4, Next: &ListNode{Val: 5}}}}})
+	res := reverseList4(&ListNode206{Val: 1, Next: &ListNode206{Val: 2, Next: &ListNode206{Val: 3, Next: &ListNode206{Val: 4, Next: &ListNode206{Val: 5}}}}})
 	fmt.Println(*res)
 }
 
-type ListNode struct {
+type ListNode206 struct {
 	Val  int
-	Next *ListNode
+	Next *ListNode206
 }
 
-func reverseList(head *ListNode) *ListNode {
-	var prev *ListNode
+func reverseList(head *ListNode206) *ListNode206 {
+	var prev *ListNode206
 	cur := head
 	for cur != nil {
 		//第一个参数交换,后继指针指向前继节点
@@ -26,8 +26,8 @@ func reverseList(head *ListNode) *ListNode {
 	return prev
 }
 
-func reverseList2(head *ListNode) *ListNode {
-	var prev *ListNode
+func reverseList2(head *ListNode206) *ListNode206 {
+	var prev *ListNode206
 	cur := head
 	for cur != nil {
 		next := cur.Next
@@ -39,7 +39,7 @@ func reverseList2(head *ListNode) *ListNode {
 }
 
 // 递归
-func reverseList3(head *ListNode) *ListNode {
+func reverseList3(head *ListNode206) *ListNode206 {
 	if head == nil || head.Next == nil {
 		return head
 	}
@@ -49,8 +49,8 @@ func reverseList3(head *ListNode) *ListNode {
 	return p
 }
 
-func reverseList4(head *ListNode) *ListNode {
-	var prev *ListNode
+func reverseList4(head *ListNode206) *ListNode206 {
+	var prev *ListNode206
 	cur := head
 	for cur != nil {
 		cur.Next, cur, prev = prev, cur.Next, cur
@@ -59,7 +59,7 @@ func reverseList4(head *ListNode) *ListNode {
 	return prev
 }
 
-func reverseList5(head *ListNode) *ListNode {
+func reverseList5(head *ListNode206) *ListNode206 {
 	if head == nil || head.Next == nil {
 		return head
 	}
