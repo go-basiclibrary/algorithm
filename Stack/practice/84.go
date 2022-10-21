@@ -7,7 +7,7 @@ import (
 
 //84 柱状图最大的矩形
 func main() {
-	fmt.Println(largestRectangleArea0302([]int{2, 1, 2}))
+	fmt.Println(largestRectangleArea05([]int{7, 7, 1}))
 }
 
 /*
