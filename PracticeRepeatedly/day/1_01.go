@@ -1,6 +1,6 @@
 package main
 
-// 11两数之和
+// 1 两数之和
 func main() {
 }
 

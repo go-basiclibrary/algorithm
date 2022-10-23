@@ -5,6 +5,11 @@ func main() {
 
 }
 
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
 // 两个解决方案,时间复杂度都是O(n),空间复杂度都是O(1)
 func detectCycle(head *ListNode) *ListNode {
 	//双指针都从起点位置开始走
