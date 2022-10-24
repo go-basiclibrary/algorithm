@@ -2,96 +2,92 @@ package main
 
 import "container/list"
 
-// LRU缓存算法
-func main() {
+// LRUCache 146 LRU缓存算法
 
-}
-
-//type ListNodeLRU struct {
+// 常规双向链表解法
+//type LRUCache struct {
+//	capacity   int
+//	cache      map[int]*doubleLinkedList
+//	head, tail *doubleLinkedList
+//}
+//
+//type doubleLinkedList struct {
 //	key, value int
-//	prev, next *ListNodeLRU
+//	prev, next *doubleLinkedList
 //}
 //
-//type LRUCache0201 struct {
-//	capacity int
-//	head     *ListNodeLRU
-//	tail     *ListNodeLRU
-//	cache    map[int]*ListNodeLRU
-//}
-//
-//// Constructor01 (int capacity) 以 正整数 作为容量 capacity 初始化 LRU 缓存
-//func Constructor01(capacity int) LRUCache0201 {
-//	head := &ListNodeLRU{}
-//	tail := &ListNodeLRU{}
+//func Constructor(capacity int) LRUCache {
+//	head := &doubleLinkedList{}
+//	tail := &doubleLinkedList{}
 //	head.next = tail
 //	tail.prev = head
-//	return LRUCache0201{
-//		cache:    map[int]*ListNodeLRU{},
+//	return LRUCache{
 //		head:     head,
 //		tail:     tail,
 //		capacity: capacity,
+//		cache:    map[int]*doubleLinkedList{},
 //	}
 //}
 //
-//// Get 存在返回值,并提升到链表最前 不存在 返回-1
-//func (lru *LRUCache0201) Get(key int) int {
-//	if res, ok := lru.cache[key]; ok { // exist
-//		lru.moveToHead(res)
+//func (lru *LRUCache) Get(key int) int {
+//	//存在,数据加入表头,返回该值
+//	if res, ok := lru.cache[key]; ok {
+//		lru.addToHead(res)
 //		return res.value
 //	}
+//	//不存在返回-1
 //	return -1
 //}
 //
-//// Put 存在则改值,并提升到链头,不存在,看数量是否够用,不够用再删除再加入
-//func (lru *LRUCache0201) Put(key int, value int) {
-//	if res, ok := lru.cache[key]; ok { // exist
-//		lru.cache[key].value = value
-//		lru.moveToHead(res)
+//func (lru *LRUCache) Put(key int, value int) {
+//	//存在,加入表头,修改该值
+//	if res, ok := lru.cache[key]; ok {
+//		res.value = value
+//		lru.addToHead(res)
 //		return
 //	}
-//	newNode := &ListNodeLRU{
-//		key:   key,
-//		value: value,
-//	}
+//	//不存在,查看链表是否等于容量,等于删除链
 //	if lru.capacity == len(lru.cache) {
 //		delete(lru.cache, lru.removeTail())
 //	}
-//	lru.addToHead(newNode)
+//	//加入数据到链,接入map
+//	newNode := &doubleLinkedList{key: key, value: value}
+//	lru.addHead(newNode)
 //	lru.cache[key] = newNode
 //}
 //
-//func (lru *LRUCache0201) moveToHead(res *ListNodeLRU) {
+//func (lru *LRUCache) addToHead(res *doubleLinkedList) {
 //	lru.deleteNode(res)
-//	lru.addToHead(res)
+//	lru.addHead(res)
 //}
 //
-//func (lru *LRUCache0201) deleteNode(res *ListNodeLRU) {
-//	res.prev.next = res.next
-//	res.next.prev = res.prev
-//}
-//
-//func (lru *LRUCache0201) addToHead(res *ListNodeLRU) {
-//	res.next = lru.head.next
-//	res.prev = lru.head
-//	lru.head.next.prev = res
-//	lru.head.next = res
-//}
-//
-//func (lru *LRUCache0201) removeTail() int {
+//func (lru *LRUCache) removeTail() int {
 //	node := lru.tail.prev
 //	lru.deleteNode(node)
 //	return node.key
 //}
+//
+//func (lru *LRUCache) deleteNode(res *doubleLinkedList) {
+//	res.prev.next = res.next
+//	res.next.prev = res.prev
+//}
+//
+//func (lru *LRUCache) addHead(res *doubleLinkedList) {
+//	res.prev = lru.head
+//	res.next = lru.head.next
+//	lru.head.next.prev = res
+//	lru.head.next = res
+//}
 
-// LRUCache02 方法二:go 内部list包
-type LRUCache02 struct {
+// LRUCache 接入go list,实现更加简单
+type LRUCache struct {
 	capacity int
 	cache    map[int]*list.Element
 	list     *list.List
 }
 
-func Constructor(capacity int) LRUCache02 {
-	return LRUCache02{
+func Constructor(capacity int) LRUCache {
+	return LRUCache{
 		capacity,
 		map[int]*list.Element{},
 		list.New(),
@@ -102,18 +98,18 @@ type entry struct {
 	key, value int
 }
 
-func (lru *LRUCache02) Get(key int) int {
-	if res, ok := lru.cache[key]; ok {
-		lru.list.MoveToFront(res)
-		return res.Value.(entry).value
+func (lru *LRUCache) Get(key int) int {
+	if e, ok := lru.cache[key]; ok {
+		lru.list.MoveToFront(e)
+		return e.Value.(entry).value
 	}
 	return -1
 }
 
-func (lru *LRUCache02) Put(key int, value int) {
-	if res, ok := lru.cache[key]; ok {
-		lru.list.MoveToFront(res)
-		res.Value = entry{key, value}
+func (lru *LRUCache) Put(key int, value int) {
+	if e, ok := lru.cache[key]; ok {
+		e.Value = entry{key, value}
+		lru.list.MoveToFront(e)
 		return
 	}
 	if lru.capacity == len(lru.cache) {
