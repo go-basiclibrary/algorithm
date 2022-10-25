@@ -23,12 +23,37 @@ func reverseList(head *ListNode206) *ListNode206 {
 	return prev
 }
 
-func reverseList02(head *ListNode206) *ListNode206 {
+//func reverseList02(head *ListNode206) *ListNode206 {
+//	if head == nil || head.Next == nil {
+//		return head
+//	}
+//	p := reverseList02(head)
+//	head.Next.Next = head.Next
+//	head.Next = nil
+//	return p
+//}
+
+func reverseList02(head *ListNode) *ListNode {
 	if head == nil || head.Next == nil {
 		return head
 	}
-	p := reverseList02(head)
-	head.Next.Next = head.Next
+	ret := reverseList02(head.Next)
+	head.Next.Next = head
 	head.Next = nil
-	return p
+	return ret
+}
+
+// 妖魔化双指针
+func reverseList03(head *ListNode) *ListNode {
+	if head == nil {
+		return head
+	}
+	cur := head
+	for head.Next != nil {
+		t := head.Next.Next //保存下一个起始节点
+		head.Next.Next = cur
+		cur = head.Next
+		head.Next = t
+	}
+	return cur
 }
