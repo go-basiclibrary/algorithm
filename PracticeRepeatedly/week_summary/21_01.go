@@ -1,8 +1,24 @@
 package main
 
 // 21 合并两个有序链表
-// 迭代
 func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
+	if list1 == nil {
+		return list2
+	}
+	if list2 == nil {
+		return list1
+	}
+	if list1.Val > list2.Val {
+		list2.Next = mergeTwoLists(list1.Next, list2)
+		return list2
+	} else {
+		list1.Next = mergeTwoLists(list1, list2.Next)
+		return list1
+	}
+}
+
+// 迭代
+func mergeTwoLists02(list1 *ListNode, list2 *ListNode) *ListNode {
 	newList := &ListNode{}
 	res := newList
 	for list1 != nil && list2 != nil {
@@ -23,21 +39,4 @@ func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
 	}
 
 	return res.Next
-}
-
-// 递归 , 找结束条件,找最小子问题
-func mergeTwoLists02(list1 *ListNode, list2 *ListNode) *ListNode {
-	if list1 == nil {
-		return list2
-	}
-	if list2 == nil {
-		return list1
-	}
-	if list1.Val > list2.Val {
-		list2.Next = mergeTwoLists(list1, list2.Next)
-		return list2
-	} else {
-		list1.Next = mergeTwoLists(list1.Next, list2)
-		return list1
-	}
 }
