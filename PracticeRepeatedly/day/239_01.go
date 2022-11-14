@@ -2,6 +2,7 @@ package main
 
 import (
 	"container/heap"
+	"fmt"
 	"sort"
 )
 
@@ -16,6 +17,7 @@ func (h *hp) Push(x interface{}) {
 }
 
 func (h *hp) Pop() interface{} {
+	fmt.Println("push", h.IntSlice)
 	v := h.IntSlice[h.Len()-1]
 	h.IntSlice = h.IntSlice[:h.Len()-1]
 	return v

@@ -2,14 +2,11 @@ package main
 
 import (
 	"container/heap"
-	"fmt"
 	"sort"
 )
 
-var a []int
-
 type hp struct {
-	sort.IntSlice //实现优先队列,这里是内嵌加重载
+	sort.IntSlice
 }
 
 func (h *hp) Push(x interface{}) {
@@ -18,17 +15,18 @@ func (h *hp) Push(x interface{}) {
 
 func (h *hp) Pop() interface{} {
 	v := h.IntSlice[h.IntSlice.Len()-1]
-	h.IntSlice = h.IntSlice[:h.IntSlice.Len()-1] // 包左不包右
+	h.IntSlice = h.IntSlice[:h.IntSlice.Len()-1]
 	return v
 }
+
+var a []int
 
 func (h hp) Less(i, j int) bool {
 	return a[h.IntSlice[i]] > a[h.IntSlice[j]]
 }
 
 // 239 滑动窗口最大值
-// 方法一,排序堆+切片
-func maxSlidingWindow01(nums []int, k int) []int {
+func maxSlidingWindow(nums []int, k int) []int {
 	a = nums
 	h := &hp{make([]int, k)}
 	for i := 0; i < k; i++ {
@@ -37,29 +35,14 @@ func maxSlidingWindow01(nums []int, k int) []int {
 
 	heap.Init(h)
 
-	n := len(nums)
-	ans := make([]int, 1, n-k+1)
+	ans := make([]int, 1, len(nums)-k+1)
 	ans[0] = nums[h.IntSlice[0]]
-
-	for i := k; i < n; i++ {
+	for i := k; i < len(nums); i++ {
 		heap.Push(h, i)
 		for h.IntSlice[0] <= i-k {
 			heap.Pop(h)
 		}
 		ans = append(ans, nums[h.IntSlice[0]])
 	}
-
 	return ans
-}
-
-func main() {
-	a = []int{1, 2, 3}
-	h := &hp{make([]int, 0)}
-	heap.Init(h)
-	heap.Push(h, 0)
-	heap.Push(h, 1)
-	heap.Push(h, 2)
-	fmt.Println(h.IntSlice)
-	heap.Pop(h)
-	fmt.Println(h.IntSlice)
 }
