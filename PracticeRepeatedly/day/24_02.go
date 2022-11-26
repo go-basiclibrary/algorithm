@@ -38,7 +38,7 @@ func swapPairs0202(head *ListNode) *ListNode {
 
 		node2.Next = node1
 		node1.Next = subHead
-		prev.Next = node2
+		prev.Next = node2 //维护以下,endHead的头指向,不仅是这个,更重要的是维护了链的完整性
 
 		//指向下一个开始节点
 		prev = node1
