@@ -1,6 +1,7 @@
 package main
 
-<<<<<<< HEAD
+import "fmt"
+
 // 144 前序遍历
 // 递归
 func preorderTraversal(root *TreeNode) []int {
@@ -23,14 +24,8 @@ func preorderTraversal(root *TreeNode) []int {
 	return res
 }
 
-// 迭代
-func preorderTraversal02(root *TreeNode) []int {
-	//维护一个递归栈
-=======
-import "fmt"
-
 // 144 前序遍历 迭代
-func preorderTraversal(root *TreeNode) []int {
+func preorderTraversal09(root *TreeNode) []int {
 	if root == nil {
 		return nil
 	}
@@ -57,13 +52,11 @@ func inorderTraversal05(root *TreeNode) []int {
 	if root == nil {
 		return nil
 	}
->>>>>>> origin/main
 	stack := []*TreeNode{}
 	res := make([]int, 0)
 
 	for root != nil || len(stack) > 0 {
 		for root != nil {
-<<<<<<< HEAD
 			// 根
 			res = append(res, root.Val)
 			stack = append(stack, root.Right)
@@ -73,17 +66,6 @@ func inorderTraversal05(root *TreeNode) []int {
 		// 右
 		root = stack[len(stack)-1]
 		stack = stack[:len(stack)-1]
-	}
-	return res
-}
-=======
-			stack = append(stack, root)
-			root = root.Left
-		}
-		cur := stack[len(stack)-1]
-		stack = stack[:len(stack)-1]
-		res = append(res, cur.Val)
-		root = cur.Right
 	}
 	return res
 }
@@ -158,4 +140,3 @@ func main() {
 	}
 	fmt.Println(res)
 }
->>>>>>> origin/main
