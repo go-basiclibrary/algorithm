@@ -43,3 +43,28 @@ func preorderTraversal02(root *TreeNode) []int {
 	}
 	return res
 }
+
+// 前序遍历 morris 算法
+func preorderTraversal03(root *TreeNode) []int {
+	res := make([]int, 0)
+	var p1, p2 *TreeNode = root, nil
+	for p1 != nil {
+		p2 = p1.Left //将左根最右节点,指向头根
+		if p2 != nil {
+			for p2.Right != nil && p2.Right != p1 {
+				p2 = p2.Right
+			}
+			if p2.Right == nil { // 找到左根最右根
+				p2.Right = p1
+				res = append(res, p1.Val)
+				p1 = p1.Left
+				continue
+			}
+			p2.Right = nil //清理指向
+		} else {
+			res = append(res, p1.Val)
+		}
+		p1 = p1.Right
+	}
+	return res
+}
