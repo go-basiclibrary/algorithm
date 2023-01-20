@@ -31,7 +31,7 @@ func checkInclusion02(s1 string, s2 string) bool {
 	if len(s1) > len(s2) {
 		return false
 	}
-	var btn [26]int // s1存在++ s2存在++
+	var btn [26]int // s1存在-- s2存在++
 	for i := 0; i < len(s1); i++ {
 		btn[s1[i]-'a']--
 		btn[s2[i]-'a']++
