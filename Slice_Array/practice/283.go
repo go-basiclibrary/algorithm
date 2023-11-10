@@ -27,7 +27,7 @@ func moveZeroes(nums []int) {
 	for i := 0; i < len(nums); i++ {
 		if nums[i] != 0 {
 			//exchange index
-			nums[j] = nums[i]
+			nums[j], nums[i] = nums[i], nums[j]
 
 			if i != j { //说明前面遇到过0
 				nums[i] = 0
