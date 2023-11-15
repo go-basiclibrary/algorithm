@@ -34,7 +34,7 @@ func largestRectangleArea(heights []int) int {
 // 2.枚举高度
 func largestRectangleArea02(heights []int) int {
 	max := 0
-	//双向枚举,找范围内最小高度
+	//双向枚举,找范围内最小宽度
 	for i := 0; i < len(heights); i++ {
 		l, r := i, i
 		h := heights[i]
