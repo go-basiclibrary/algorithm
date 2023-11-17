@@ -89,7 +89,7 @@ func largestRectangleArea03(heights []int) int {
 	return max
 }
 
-func largestRectangleArea0302(heights []int) int {
+func largestRectangleArea0102(heights []int) int {
 	max := 0
 	stack := make([]int, 0)
 	heights = append(heights, 0)        //引入一个哨兵
