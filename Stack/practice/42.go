@@ -1,98 +1,67 @@
 package main
 
 // 42 接雨水
+// func1 单调栈
 //func trap(height []int) int {
-//	// 求最大高度
-//	heiG := maxHeight(height)
-//	area := 0
-//	// 遍历每一行,直到最大高度
-//	for i := 1; i <= heiG; i++ {
-//		isStart := false
-//		tem_Sum := 0
-//		for j := 0; j < len(height); j++ {
-//			if isStart && height[j] < i { //开始标记了,并且再次遇到了 hei >= i
-//				tem_Sum++
+//	var area int
+//	var trapStack = make([]int, 0, len(height))
+//	for i, h := range height {
+//		// 如果当前trapStack中有元素,且当前h大于左边,则进入循环出栈进行计算area
+//		for len(trapStack) > 0 && h > height[trapStack[len(trapStack)-1]] {
+//			top := trapStack[len(trapStack)-1]
+//			// pop top
+//			trapStack = trapStack[:len(trapStack)-1]
+//			// 如果左侧没有边界,则直接退出
+//			if len(trapStack) == 0 {
+//				break
 //			}
-//			if height[j] >= i {
-//				area += tem_Sum
-//				tem_Sum = 0
-//				isStart = true
-//			}
+//			// 获取左边界
+//			left := trapStack[len(trapStack)-1]
+//			// 获取宽度
+//			curWeight := i - left - 1
+//			// 获取高度
+//			curHeight := min(h, height[left]) - height[top]
+//			// 计算面积
+//			area += curWeight * curHeight
 //		}
+//		trapStack = append(trapStack, i)
 //	}
-//	// return
 //	return area
 //}
 //
-//func maxHeight(height []int) int {
-//	max := 0
-//	for i := 0; i < len(height); i++ {
-//		if height[i] > max {
-//			max = height[i]
-//		}
+//func min(h int, i int) int {
+//	if h > i {
+//		return i
 //	}
-//	return max
+//	return h
 //}
 
-// 42 接雨水
-// 动态规划
+// func2 双指针用法
 //func trap(height []int) int {
-//	area := 0
-//	max_left := make([]int, len(height))
-//	max_right := make([]int, len(height))
-//	for i := 1; i < len(height); i++ {
-//		max_left[i] = maxH(max_left[i-1], height[i-1])
-//	}
-//	for i := len(height) - 2; i >= 0; i-- {
-//		max_right[i] = maxH(max_right[i+1], height[i+1])
-//	}
-//	for i := 1; i < len(height)-1; i++ {
-//		min := minH(max_left[i], max_right[i])
-//		if min > height[i] {
-//			area += min - height[i]
+//	var area int
+//	// 初始化双指针起点
+//	var left, right = 0, len(height) - 1
+//	// 记录左侧最大值和右侧最大值
+//	var leftMax, rightMax = 0, 0
+//	for left < right {
+//		leftMax = maxFunc(leftMax, height[left])
+//		rightMax = maxFunc(rightMax, height[right])
+//		// 如果当前left高度,小于right高度
+//		if height[left] < height[right] {
+//			area += leftMax - height[left]
+//			left++
+//		} else { // 如果当前left高度,大于等于right高度
+//			area += rightMax - height[right]
+//			right--
 //		}
 //	}
-//
 //	return area
 //}
-
-//func minH(i int, i2 int) int {
-//	if i > i2 {
-//		return i2
+//
+//func maxFunc(leftMax int, h int) int {
+//	if leftMax > h {
+//		return leftMax
+//	} else {
+//		return h
 //	}
-//	return i
 //}
-
-func maxH(i int, i2 int) int {
-	if i > i2 {
-		return i
-	}
-	return i2
-}
-
-// 双指针
-func trap(height []int) int {
-	area := 0
-	max_left := 0
-	max_right := 0
-	left := 1
-	right := len(height) - 2
-	for i := 1; i < len(height)-1; i++ {
-		if height[left-1] < height[right+1] {
-			max_left = maxH(max_left, height[left-1])
-			min := max_left
-			if min > height[left] {
-				area += min - height[left]
-			}
-			left++
-		} else {
-			max_right = maxH(max_right, height[right+1])
-			min := max_right
-			if min > height[right] {
-				area += min - height[right]
-			}
-			right--
-		}
-	}
-	return area
-}

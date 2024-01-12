@@ -22,7 +22,7 @@ func (h *hp) Pop() interface{} {
 	return v
 }
 
-func (h hp) Less(i, j int) bool {
+func (h *hp) Less(i, j int) bool {
 	return a[h.IntSlice[i]] > a[h.IntSlice[j]]
 }
 
