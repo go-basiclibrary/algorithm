@@ -41,3 +41,22 @@ func reverseC(c []*Node) {
 		c[i], c[len(c)-i-1] = c[len(c)-i-1], c[i]
 	}
 }
+
+//func preorder(root *Node) []int {
+//	var res = make([]int, 0)
+//	var stack = []*Node{root}
+//	var node *Node
+//	for len(stack) > 0 {
+//		node = stack[len(stack)-1]
+//		// pop
+//		stack = stack[:len(stack)-1]
+//		// append res
+//		res = append(res, node.Val)
+//
+//		for i := len(node.Children) - 1; i >= 0; i-- {
+//			stack = append(stack, node.Children[i])
+//		}
+//	}
+//
+//	return res
+//}
