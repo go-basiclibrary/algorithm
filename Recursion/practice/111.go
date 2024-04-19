@@ -70,7 +70,7 @@ type TreeNode struct {
 //	return 0
 //}
 
-// func3 BFS优化
+// func3 DFS
 //func minDepth(root *TreeNode) int {
 //	if root == nil {
 //		return 0
