@@ -1,6 +1,11 @@
 package main
 
+import "fmt"
+
 // 子集
+func main() {
+	fmt.Println(2 % 2)
+}
 
 // 回溯
 //func subsets(nums []int) [][]int {
