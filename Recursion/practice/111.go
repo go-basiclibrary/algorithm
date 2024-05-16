@@ -7,9 +7,11 @@ func main() {
 	var stack []int
 	stack = append(stack, 1)
 	for i := 0; i < len(stack); i++ {
-		fmt.Println(len(stack))
-		val := stack[i]
-		fmt.Println(val)
+		fmt.Println(len(stack), "000", i)
+		stack = append(stack, 1)
+		if len(stack) == 5 {
+			return
+		}
 	}
 }
 
